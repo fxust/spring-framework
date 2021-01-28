@@ -138,6 +138,7 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 
 		super(parent);
 		setConfigLocations(configLocations);
+		//这里调用容器的refresh，是载入BeanDefinition的入口
 		if (refresh) {
 			refresh();
 		}

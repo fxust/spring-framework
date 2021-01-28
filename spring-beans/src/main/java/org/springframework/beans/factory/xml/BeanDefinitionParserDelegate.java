@@ -512,16 +512,23 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
+			//创建BeanDefinition，封装解析出来bean
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
+			//对当前bean元素进行属性解析，并设置描述
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 
+
+			//解析<bean></bean>包含的meta信息，如果有的话
 			parseMetaElements(ele, bd);
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
 
+			//接下bean元素构造函数
 			parseConstructorArgElements(ele, bd);
+
+			//解析Property属性元素
 			parsePropertyElements(ele, bd);
 			parseQualifierElements(ele, bd);
 
@@ -530,6 +537,7 @@ public class BeanDefinitionParserDelegate {
 
 			return bd;
 		}
+		//以下是在解析bean的时候经常遇到的一些异常信息
 		catch (ClassNotFoundException ex) {
 			error("Bean class [" + className + "] not found", ele, ex);
 		}

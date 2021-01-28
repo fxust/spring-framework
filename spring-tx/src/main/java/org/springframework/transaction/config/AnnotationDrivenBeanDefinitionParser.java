@@ -60,7 +60,10 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+		//向Spring容器注册了一个TransactionalEventListenerFactory相关的bean
 		registerTransactionalEventListenerFactory(parserContext);
+
+		//获取事务模式，默认是proxy方式（事务支持的实现方式有两种，aspectj 和 proxy的方式
 		String mode = element.getAttribute("mode");
 		if ("aspectj".equals(mode)) {
 			// mode="aspectj"
@@ -70,6 +73,7 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 			}
 		}
 		else {
+			//主要向Spring容器注册了四个相关的BeanDefinition以及相关属性设置
 			// mode="proxy"
 			AopAutoProxyConfigurer.configureAutoProxyCreator(element, parserContext);
 		}

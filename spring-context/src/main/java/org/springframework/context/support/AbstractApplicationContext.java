@@ -552,6 +552,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			StartupStep contextRefresh = this.applicationStartup.start("spring.context.refresh");
 
 			// Prepare this context for refreshing.
+			//这里是启动前准备上下文信息
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
@@ -566,28 +567,36 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				StartupStep beanPostProcess = this.applicationStartup.start("spring.context.beans.post-process");
 				// Invoke factory processors registered as beans in the context.
+				// 调用BeanFactory的后置处理器，这些后置处理器是Bean定义的时候向容器注册的。
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 注册bean的后置处理器，在bean创建过程中调用
 				registerBeanPostProcessors(beanFactory);
 				beanPostProcess.end();
 
 				// Initialize message source for this context.
+				//初始化上下文中的消息资源
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				//初始化上下文中的事件机制
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				//初始化其他特殊的bean
 				onRefresh();
 
 				// Check for listener beans and register them.
+				//检查监听这些bean并注册他们
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				//非延迟初始化所有的单例
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 最后一步，发布容器时间，结束refresh过程
 				finishRefresh();
 			}
 
@@ -598,9 +607,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 
 				// Destroy already created singletons to avoid dangling resources.
+				// 为了避免资源占用，销毁已经创建的单例bean
 				destroyBeans();
 
 				// Reset 'active' flag.
+				//重置active标志
 				cancelRefresh(ex);
 
 				// Propagate exception to caller.
